@@ -9,6 +9,8 @@
         "sourceType": "module"
     },
     "rules": {
+		"no-undef": "off",
+		"no-tabs": "off",
         "no-console": 1, // To track how many console logs are used.
         "indent": [
             "error",

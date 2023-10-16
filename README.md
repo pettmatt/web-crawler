@@ -23,11 +23,11 @@ The project uses Jest as the testing library and ESLint as the linter. Below the
 Testing
 
 ```bash
-
+jest
 ```
 
 Linting
 
 ```bash
-
+eslint .
 ```
