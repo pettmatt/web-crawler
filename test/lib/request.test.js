@@ -1,12 +1,13 @@
 import request from "../../src/lib/request"
 
-test("Makes a basic HTTP request", () => {
-	const testReq = request("https://google.com")
-		.then((data) => {
-			console.log(data)
-			expect(data).toBeInstanceOf(Response)
-		})
-		.catch((err) => fail(`HTTP request failed with following excuse:\n${err}`))
+// Reason why "throw new Error" is used and not "fail":
+// https://github.com/jestjs/jest/issues/11698
 
-	return testReq
+test("Makes a basic HTTP request", async () => {
+	try {
+		const req = request("https://google.com")
+		expect(req).toBeInstanceOf(Response)
+	} catch (error) {
+		throw new Error(`HTTP request failed with following excuse:\n${err}`)
+	}
 })

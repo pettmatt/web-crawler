@@ -1,5 +1,6 @@
-async function request(link) {
+function request(link) {
 	const url = new URL(link)
+
 	const response = fetch(url)
 		.then((res) => {
 			if (!res.ok) {
