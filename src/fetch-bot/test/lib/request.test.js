@@ -1,4 +1,4 @@
-import request from "../../src/lib/request"
+import request from "../../lib/request"
 
 // Reason why "throw new Error" is used and not "fail":
 // https://github.com/jestjs/jest/issues/11698

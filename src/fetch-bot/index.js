@@ -1,9 +1,9 @@
 import request from "./lib/request"
 import handleStream from "./lib/process/stream"
 
-console.log("Hello via Bun!")
+console.log("Hello via Node!")
 
-const response = await request("https://duck.com")
+const response = await request("https://pettmatt.com")
 	.then((res) => res)
 	.catch((err) => err)
 
