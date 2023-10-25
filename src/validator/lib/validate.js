@@ -36,7 +36,7 @@ Disallow:
 		const [directive, value] = line.trim().split(/\s*:\s*/)
 
 		if (directive && value) {
-			if (!rules.hasOwnProperty(directive)) {
+			if (!Object.prototype.hasOwnProperty.call(rules, directive)) {
 				rules[directive.toLowerCase()] = []
 			}
 
@@ -59,8 +59,6 @@ Disallow:
 			}
 		})
 	}
-
-	console.log(permission)
 
 	return permission
 }

@@ -15,6 +15,10 @@
 		"test": "jest",
 		"lint": "eslint ."
 	},
+	"keywords": [
+		"bot",
+		"web-scraper"
+	],
 	"devDependencies": {
 		"@babel/core": "^7.23.2",
 		"@babel/preset-env": "^7.23.2",

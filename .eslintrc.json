@@ -12,6 +12,9 @@
 		"no-undef": "off",
 		"no-tabs": "off",
         "no-console": 1, // To track how many console logs are used.
+        "import/extensions": ["error", "ignorePackages", {
+            "*": "never"
+        }],
         "indent": [
             "error",
             "tab"
