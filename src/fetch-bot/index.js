@@ -22,7 +22,7 @@ function validateHeadTags(html, rule) {
 	return { robotsMetaTags: allInstancesOfRule, head }
 }
 
-function scrapePage(pages) {
+function scrapeHTML(pages) {
 	const ruleTags = ["<meta name=\"robots\""]
 	const scrape = [["<body>", "</body>"]]
 	const followRules = ["noindex", "nofollow", "noarchive", "nosnippet"]
@@ -78,12 +78,14 @@ async function main() {
 	const htmlResponses = []
 
 	for (let link of links) {
+		// Add features that are common for bots.
+		// For example if fetch request fails -> fait 2 secs and try again
 		const response = await fetch(link)
 		const html = await response.text()
 		htmlResponses.push({ link, html })
 	}
 
-	const pages = scrapePage(htmlResponses)
+	const scrapedList = scrapeHTML(htmlResponses)
 }
 
 main()
