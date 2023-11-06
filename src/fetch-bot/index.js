@@ -1,5 +1,3 @@
-import request from "./lib/request.js"
-
 function validateHeadTags(html, rule) {
 	const headStart = html.indexOf("<head>") + "<head>".length
 	const headEnd = html.indexOf("</head>")
@@ -86,6 +84,10 @@ async function main() {
 	}
 
 	const scrapedList = scrapeHTML(htmlResponses)
+	
+	for(let page of scrapedList) {
+		console.log(page.scrapeResult)
+	}
 }
 
 main()
