@@ -91,3 +91,5 @@ async function main() {
 }
 
 main()
+
+export { scrapeHTML, validateHeadTags }
