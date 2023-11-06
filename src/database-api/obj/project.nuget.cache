@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "r4uubMGrkoBFp+yL952YdX1jPaFlueMRMpnseq6B6WJAv5+eZ3ulsoHfYDvxogyXP6/clJoNdxrYQIUHS2DAEg==",
+  "success": true,
+  "projectFilePath": "/home/pickle/Dev/web/web-crawler/src/database-api/database-service-api.csproj",
+  "expectedPackageFiles": [
+    "/home/pickle/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.13/microsoft.aspnetcore.app.ref.7.0.13.nupkg.sha512"
+  ],
+  "logs": []
+}

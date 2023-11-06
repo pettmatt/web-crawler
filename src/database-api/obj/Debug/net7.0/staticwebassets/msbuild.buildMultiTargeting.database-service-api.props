@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/database-service-api.props" />
+</Project>
