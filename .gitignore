@@ -3,6 +3,13 @@
 /**/todo.txt
 
 # Aspnet
+
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+
 # User-specific files
 *.suo
 *.user
