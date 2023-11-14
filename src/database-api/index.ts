@@ -1,3 +1,4 @@
+import { testDatabaseConnection } from "./database/client"
 import express, { Request, Response } from "express"
 import stationRoutes from "./routes/sites"
 import journeyRoutes from "./routes/pages"
@@ -18,7 +19,7 @@ app.use(cors(corsOptions))
 app.use(compression())
 app.use(express.json())
 
-// Challenge: Limit requests that the client and the bot scripts can make returning 429 status code.
+// Challenge: Limit requests that the client and the bot scripts can make (returning 429 status code).
 
 app.use("/", [stationRoutes])
 app.use("/", [journeyRoutes])
@@ -37,6 +38,8 @@ app.use((error: Error, _req: Request, res: Response) => {
     })
 })
 
+testDatabaseConnection()
+
 app.listen(port, () => {
-    return console.log(`Express is listening at http://localhost:${port}`);
+    console.log(`Express is listening at http://localhost:${port}`)
 })
