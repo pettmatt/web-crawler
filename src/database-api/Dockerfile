@@ -1,5 +1,5 @@
 FROM node:20-alpine
-WORKDIR /usr/api
+WORKDIR /usr/src/api
 
 COPY package*.json ./
 RUN npm ci
