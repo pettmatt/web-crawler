@@ -3,7 +3,7 @@ import { client } from "./client"
 import env from "dotenv"
 env.config()
 
-const productionMode = (process.env.PRODUCTION.toLowerCase() === "true") ? true : false
+const productionMode = process.env.PRODUCTION
 
 const Sites = client.define("sites", {
     id: {
@@ -23,18 +23,18 @@ const Sites = client.define("sites", {
     category: DataTypes.ARRAY(DataTypes.STRING),
     createdAt: {
         type: DataTypes.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         allowNull: false
     },
     updatedAt: {
         type: DataTypes.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         allowNull: false
     }
 })
 
-client.sync({ force: (productionMode) }).then(() => {
-    console.log("Site table created")
+client.sync({ force: (productionMode === "development") }).then(() => {
+    console.log("Site table created.")
 }).catch(error => {
     console.log(`Unable to create site table: ${error}`)
 })

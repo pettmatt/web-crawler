@@ -7,14 +7,14 @@ const host = process.env.DATABASE_HOST as string
 const username = process.env.POSTGRES_USER as string
 const password = process.env.POSTGRES_PASSWORD as string
 const database = process.env.POSTGRES_DB as string
-const productionMode = (process.env.PRODUCTION.toLowerCase() === "true") ? true : false
+const productionMode = process.env.PRODUCTION as string
 
 const client = new Sequelize(database, username, password, {
     host: host,
     port: port,
     dialect: "postgres",
-    logging: (productionMode) ? (message) => {
-        console.log("Sequelize logging message:", message)
+    logging: (productionMode === "development") ? (message) => {
+        console.log(`Sequelize logging message: ${message}`)
     } : false,
 })
 

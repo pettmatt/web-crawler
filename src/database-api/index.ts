@@ -7,6 +7,7 @@ import cors from "cors"
 import env from "dotenv"
 env.config()
 
+const productionMode = process.env.MODE
 const app = express()
 const port = 3000
 
@@ -19,7 +20,11 @@ app.use(cors(corsOptions))
 app.use(compression())
 app.use(express.json())
 
-// Challenge: Limit requests that the client and the bot scripts can make (returning 429 status code).
+// Challenge: Limit requests that the client and the bot scripts can make (returning 429 status code). (Check if necessary)
+
+if (productionMode === "development") {
+    testDatabaseConnection()
+}
 
 app.use("/", [stationRoutes])
 app.use("/", [journeyRoutes])
@@ -37,8 +42,6 @@ app.use((error: Error, _req: Request, res: Response) => {
         error
     })
 })
-
-testDatabaseConnection()
 
 app.listen(port, () => {
     console.log(`Express is listening at http://localhost:${port}`)
