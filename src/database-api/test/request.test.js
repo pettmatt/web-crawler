@@ -3,8 +3,10 @@ describe("API can handle", () => {
         try {
             const res = await fetch("http://localhost:3000/sites")
 
-            if (res) {
+            if (res.ok) {
                 expect(res.status).toBe(200)
+            } else {
+                expect(res.status).toBe(500)
             }
         } catch(error) {
             throw new Error(error)
@@ -15,20 +17,23 @@ describe("API can handle", () => {
         try {
             const res = await fetch("http://localhost:3000/sites", {
                 method: "POST",
-                body: {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
                     header: "Test record",
                     url: "http://www.example.com"
-                }
+                })
             })
 
             const body = await res.json()
 
-            if (res) {
-                expect([201, 400]).toContain(res.status)
-
-                if (res.status === 400) {
-                    expect(body).toEqual({ message: "Cannot create a site record without necessary parameters." })
-                }
+            if (res.ok) {
+                expect([201]).toContain(res.status)
+            } else if (res.status === 400) {
+                expect(body).toEqual({ message: "Cannot create a site record without necessary parameters." })
+            } else {
+                expect(res.status).toBe(500)
             }
         } catch(error) {
             throw new Error(error)
@@ -39,23 +44,28 @@ describe("API can handle", () => {
         try {
             const res = await fetch("http://localhost:3000/sites/1", {
                 method: "PUT",
-                body: {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
                     header: "Test record update",
                     url: "http://www.example.com"
-                }
+                })
             })
 
             const body = await res.json()
 
-            if (res) {
+            if (res.ok) {
                 expect([200, 204, 400]).toContain(res.status)
 
                 if (res.status === 200) {
                     const body = await res.json()
                     expect(body).toEqual({ message: "No such record exists." })
-                } else if (res.status === 400) {
-                    expect(body).toEqual({ message: "Cannot update a site record without necessary parameters." })
                 }
+            } else if (res.status === 400) {
+                expect(body).toEqual({ message: "Cannot update a site record without necessary parameters." })
+            } else {
+                expect(res.status).toBe(500)
             }
         } catch(error) {
             throw new Error(error)
@@ -70,7 +80,7 @@ describe("API can handle", () => {
                 method: "DELETE"
             })
 
-            if (deleteRes) {
+            if (deleteRes.ok) {
                 expect([200, 204]).toContain(deleteRes.status)
 
                 if (deleteRes.status === 204) {
@@ -81,6 +91,8 @@ describe("API can handle", () => {
                         expect(doubleCheckBody.length).toBeLessThan(getBody.length)
                     }
                 }
+            } else {
+                expect(res.status).toBe(500)
             }
         } catch(error) {
             throw new Error(error)
