@@ -5,6 +5,7 @@
 	"version": "0.0.1",
 	"description": "Validate if a page allows bot activity",
 	"jest": {
+		"transform": { "^.+\\.[t|j]sx?$": "babel-jest" },
 		"testEnvironment": "node",
 		"moduleFileExtensions": ["js", "mjs"],
   		"testMatch": ["**/*.test.js", "**/*.test.mjs"]

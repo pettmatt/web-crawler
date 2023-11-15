@@ -53,10 +53,8 @@ describe("API can handle", () => {
                 })
             })
 
-            const body = await res.json()
-
             if (res.ok) {
-                expect([200, 204, 400]).toContain(res.status)
+                expect([200, 204]).toContain(res.status)
 
                 if (res.status === 200) {
                     const body = await res.json()

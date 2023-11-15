@@ -10,9 +10,66 @@ services:
       - .env
     ports:
       - 5432:5432
+    networks:
+      inner-network:
+        ipv4_address: 172.20.0.2
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8088:8080
+    networks:
+      inner-network:
+        ipv4_address: 172.20.0.3
+
+  db-api:
+    restart: always
+    build:
+      context: ./src/fetch-bot
+    depends_on:
+      - db
+    ports:
+      - 3000
+    networks:
+      inner-network:
+        ipv4_address: 172.20.0.4
+
+  # fetch-bot:
+  #   restart: always
+  #   build:
+  #     context: ./src/fetch-bot
+  #   ports:
+  #     - 3001
+  #   networks:
+  #     inner-network:
+  #       ipv4_address: 172.20.0.4
+
+  # persister:
+  #   restart: always
+  #   build:
+  #     context: ./src/persister
+  #   ports:
+  #     - 3002
+  #   networks:
+  #     inner-network:
+  #       ipv4_address: 172.20.0.4
+
+  # validator:
+  #   restart: always
+  #   build:
+  #     context: ./src/validator
+  #   ports:
+  #     - 3003
+  #   networks:
+  #     inner-network:
+  #       ipv4_address: 172.20.0.4
+
+networks:
+  inner-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/24
+          gateway: 172.20.0.1
