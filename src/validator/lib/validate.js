@@ -1,36 +1,19 @@
-const permission = {
-	url: "",
-	restrictions: false,
-	pagesToIgnore: [],
-}
-
-async function fetchRequest(url) {
-	try {
-		const res = await fetch(`${url}`)
-
-		if (!res.ok) {
-			throw new Error(`Failed to fetch robots.txt: ${res.statusText}`)
-		}
-
-		const content = await res.text()
-		return content
-	} catch (err) {
-		const objectError = {
-			error: true,
-			message: err,
-		}
-
-		return objectError
-	}
-}
-
 async function checkRobotsFile(url) {
-	// const response = await fetchRequest(`${url}/robots.txt`)
-	const response = `
-User-agent: *
-Disallow:
-`
+	const response = await fetchRequest(`${url}/robots.txt`)
+	// const response = `User-agent: *\nDisallow:`
 	const rules = {}
+	const permission = {
+		url: "",
+		restrictions: false,
+		pagesToIgnore: [],
+	}
+
+	// Most likely the response fails, which indicates the site doesn't have "/robots.txt" path
+	if (typeof response !== "string") {
+		permission.url = url
+		permission.error = response
+		return permission
+	}
 
 	response.split("\n").forEach((line) => {
 		const [directive, value] = line.trim().split(/\s*:\s*/)
@@ -63,11 +46,24 @@ Disallow:
 	return permission
 }
 
-function checkPageHeader(url) {
-	const response = fetchRequest(url)
-	const content = response
+async function fetchRequest(url) {
+	try {
+		const res = await fetch(url)
 
-	return new Response(content)
+		if (!res.ok) {
+			throw new Error(`Failed to fetch robots.txt: ${res.statusText}`)
+		}
+
+		const content = await res.text()
+		return content
+	} catch (error) {
+		const objectError = {
+			error: true,
+			message: error,
+		}
+
+		return objectError
+	}
 }
 
-export { checkRobotsFile, checkPageHeader }
+export { checkRobotsFile }

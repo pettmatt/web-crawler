@@ -2,35 +2,41 @@ import { checkRobotsFile } from "./lib/validate.js"
 
 // This file is responsible for listening events, queueing,
 // forwarding data and forwarding validated links to fetch bot.
-const queue = [{
-	url: "http://robotstxt.org",
-	processed: false,
-},
-{
-	url: "google",
-	processed: true,
-}]
+const queue = [
+    {
+        url: "http://robotstxt.org",
+        processed: true
+    },
+    {
+        url: "google.com",
+        processed: false
+    }
+]
 
-async function validateLinks() {
+async function validateLinks(queue) {
+    const urlQueue = queue
+
 	const processedQueue = await Promise.all(queue.map(async (page, index) => {
 		let object = null
 
 		if (!page.processed) {
 			const robotsObject = await checkRobotsFile(page.url)
 
-			object = {
-				robotsTxt: robotsObject,
-			}
+			object = robotsObject
 
-			queue[index].processed = true
+			urlQueue[index].processed = true
 		}
 
 		return object
 	}))
 
-	// Returns a list that doesn't contain null values
-	return processedQueue.filter((object) => object !== null)
+	return {
+        processedQueue: processedQueue.filter((object) => object !== null),
+        urlQueue
+    }
 }
 
-const results = await validateLinks()
-console.log("Results", results)
+// const results = await validateLinks(queue)
+// console.log("Results", results)
+
+export default validateLinks

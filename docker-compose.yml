@@ -5,9 +5,12 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile
-    env_file:
-      - .env
+      dockerfile: Dockerfile.DB
+    environment:
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
     ports:
       - 5432:5432
     networks:
@@ -23,19 +26,38 @@ services:
       inner-network:
         ipv4_address: 172.20.0.3
 
-  db-api:
+  broker:
+    image: rabbitmq
     restart: always
     build:
-      context: ./src/fetch-bot
-    depends_on:
-      - db
-    env_file:
-      - .env
-    ports:
-      - 3000
+      context: .
+      dockerfile: Dockerfile.Broker
+    # ports:
+    #   - 3003:3003
     networks:
       inner-network:
         ipv4_address: 172.20.0.4
+
+  # db-api:
+  #   restart: always
+  #   build:
+  #     context: ./src/fetch-bot
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     - POSTGRES_PORT=5432
+  #     - POSTGRES_DB=testdb
+  #     - POSTGRES_USER=test
+  #     - POSTGRES_PASSWORD=test
+  #     - MODE=development
+  #   # env_file:
+  #     # - .env
+  #   ports:
+  #     - 3000
+  #   networks:
+  #     inner-network:
+  #       ipv4_address: 172.20.0.4
 
   # fetch-bot:
   #   restart: always
