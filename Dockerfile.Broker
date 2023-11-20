@@ -1,0 +1,7 @@
+FROM rabbitmq:3.8
+WORKDIR /usr/src/broker
+
+# Default rabbitmq port
+EXPOSE 5672
+# Default UI port
+EXPOSE 15672
