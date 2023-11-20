@@ -18,7 +18,7 @@ describe("Validator can", () => {
 
             const results = await validateLinks(queue)
             robotsRouteTest = results
-    
+
             expect(results).toBeInstanceOf(Object)
         } catch (error) {
             throw new Error(`Validator robots.txt test failed with following excuse:\n${error}`)
