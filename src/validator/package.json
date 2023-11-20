@@ -19,8 +19,8 @@
 		]
 	},
 	"scripts": {
-		"start": "concurrently --kill-others \"node ./receiver\"",
-		"dev": "concurrently --kill-others \"nodemon ./receiver\"",
+		"start": "node ./receiver",
+		"dev": "nodemon ./receiver",
 		"test": "jest",
 		"lint": "eslint ."
 	},
