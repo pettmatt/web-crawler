@@ -21,7 +21,7 @@
 	"scripts": {
 		"start": "concurrently --kill-others \"node ./receiver\"",
 		"dev": "concurrently --kill-others \"nodemon ./receiver\"",
-		"test": "jest --detectOpenHandles",
+		"test": "jest",
 		"lint": "eslint ."
 	},
 	"keywords": [
