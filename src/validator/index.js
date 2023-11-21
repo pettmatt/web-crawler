@@ -36,12 +36,12 @@ async function validateLinks(queue) {
     }
 }
 
-const results = await validateLinks([
-    {
-        url: "http://robotstxt.org",
-        processed: false
-    }
-])
-console.log("Results", results)
+// const results = await validateLinks([
+//     {
+//         url: "http://robotstxt.org",
+//         processed: false
+//     }
+// ])
+// console.log("Results", results)
 
 export default validateLinks

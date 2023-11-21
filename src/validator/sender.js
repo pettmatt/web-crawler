@@ -1,10 +1,10 @@
-import amqp from "amqplib"
+import amqp from "amqplib/callback_api.js"
 
 async function triggerSender(messageValue, queue = "persister_queue") {
-    amqp.connect(`amqp://172.20.0.4:5672`, async (error, connection) => {
+    amqp.connect(`amqp://broker:test@172.20.0.4:5672`, async (error, connection) => {
         if (error) throw error
     
-        connection.createChannel((error01, channel) => {
+        connection.createChannel(async (error01, channel) => {
             if (error01) throw error01
     
             const message = JSON.stringify(messageValue)
@@ -13,12 +13,11 @@ async function triggerSender(messageValue, queue = "persister_queue") {
             channel.sendToQueue(queue, Buffer.from(message))
     
             console.log(" [x] Sent %s", message)
-        })
 
-        setTimeout(() => {
-            connection.close()
-            process.exit(0)
-        }, 1000)
+            await channel.close(() => {
+                connection.close()
+            })
+        })
     })
 }
 

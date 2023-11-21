@@ -18,16 +18,16 @@ describe("Validator can", () => {
 
             const results = await validateLinks(queue)
             robotsRouteTest = results
-
-            expect(results).toBeInstanceOf(Object)
+            
+            expect(robotsRouteTest).toBeInstanceOf(Object)
         } catch (error) {
             throw new Error(`Validator robots.txt test failed with following excuse:\n${error}`)
         }
     })
-
+    
     test("return an object with processedQueue and urlQueue properties", async () => {
         expect(robotsRouteTest.processedQueue).toBeDefined()
-        expect(robotsRouteTest.urlQueue).toBeDefined()
+        expect(robotsRouteTest.linkQueue).toBeDefined()
     })
 
     test("return an object with correct properties and values", async () => {
@@ -35,7 +35,7 @@ describe("Validator can", () => {
         expect(robotsRouteTest.processedQueue).toHaveProperty("[0].restrictions")
         expect(robotsRouteTest.processedQueue).toHaveProperty("[0].pagesToIgnore")
         expect(robotsRouteTest.processedQueue).toHaveProperty("[0].error")
-        expect(robotsRouteTest.urlQueue).toStrictEqual([
+        expect(robotsRouteTest.linkQueue).toStrictEqual([
             {
                 "processed": true,
                 "url": "http://robotstxt.org"

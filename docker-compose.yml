@@ -32,9 +32,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.Broker
-    # environment:
-    #   - "RABBITMQ_DEFAULT_USER=broker"
-    #   - "RABBITMQ_DEFAULT_PASS=test"
+    environment:
+      - "RABBITMQ_DEFAULT_USER=broker"
+      - "RABBITMQ_DEFAULT_PASS=test"
     networks:
       inner-network:
         ipv4_address: 172.20.0.4
