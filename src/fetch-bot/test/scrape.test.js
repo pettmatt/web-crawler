@@ -41,10 +41,12 @@ describe("Validator can", () => {
             const list = [{ link: "https://example.com", html }]
             const scrapedResult = scrapeHTML(list)
 
+            console.log(scrapedResult)
+
             expect(scrapedResult).toBeInstanceOf(Object)
             expect(scrapedResult[0].page).toBeDefined()
-            expect(scrapedResult[0].scrapeResult).toBeDefined()
-            expect(scrapedResult[0].scrapeResult).toBeInstanceOf(Object)
+            expect(scrapedResult[0].details).toBeDefined()
+            expect(scrapedResult[0].details).toBeInstanceOf(Object)
         } catch(error) {
             throw new Error(`Scrape HTML test failed with following excuse:\n${error}`)
         }
