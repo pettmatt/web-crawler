@@ -1,7 +1,7 @@
 import { scrapeHTML } from "./lib/process.js"
 
 async function fetchAndProcessDataFromUrl(link) {
-	const htmlResponses = []
+	let htmlResponse = null
 	let index = 0
 
 	const intervalId = setInterval(fetchRequest, 2000)
@@ -12,7 +12,7 @@ async function fetchAndProcessDataFromUrl(link) {
 
 		if (response.ok) {
 			const html = await response.text()
-			htmlResponses.push({ link, html })
+			htmlResponse = { link, html }
 			clearInterval(intervalId)
 		} else if (index > 1 || response.status === 500) {
 			clearInterval(intervalId)
@@ -21,7 +21,7 @@ async function fetchAndProcessDataFromUrl(link) {
 		index++
 	}
 
-	const scrapedList = scrapeHTML(htmlResponses)
+	const scrapedList = scrapeHTML(htmlResponse)
 
 	return scrapedList
 }

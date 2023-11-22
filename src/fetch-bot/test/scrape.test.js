@@ -23,7 +23,7 @@ describe("Validator can", () => {
         }
     })
 
-    test("scrape HTML", async () => {
+    test("scrape HTML with correct structure", async () => {
         try {
             const html = `
                 <html>
@@ -38,15 +38,32 @@ describe("Validator can", () => {
                 </body>
                 </html>
             `
-            const list = [{ link: "https://example.com", html }]
+            const list = { link: "https://example.com", html }
             const scrapedResult = scrapeHTML(list)
 
-            console.log(scrapedResult)
-
             expect(scrapedResult).toBeInstanceOf(Object)
-            expect(scrapedResult[0].page).toBeDefined()
-            expect(scrapedResult[0].details).toBeDefined()
-            expect(scrapedResult[0].details).toBeInstanceOf(Object)
+            expect(scrapedResult.url).toBeDefined()
+            expect(scrapedResult.url).toBe("https://example.com")
+            expect(scrapedResult.scraped).toBeDefined()
+            expect(scrapedResult.scraped).toBeInstanceOf(Object)
+            expect(scrapedResult.scraped).toStrictEqual({
+                head: '<head>\n                    <meta robots="" />\n                </head>',
+                body: '<body>\n' +
+                  '                    <h1>Test<h1>\n' +
+                  '                    <p>Lorem ipsum</p>\n' +
+                  '                    <a href="/internalLink">Internal</a>\n' +
+                  '                    <a href="https://google.com">To somewhere</a>\n' +
+                  '                </body>'
+            })
+            expect(scrapedResult.rules).toBeDefined()
+            expect(scrapedResult.rules).toBeInstanceOf(Object)
+            expect(scrapedResult.rules).toStrictEqual([
+                {
+                  metaTagsFound: false,
+                  searchedTag: '<meta name="robots"',
+                  metaRobotRules: null
+                }
+            ])
         } catch(error) {
             throw new Error(`Scrape HTML test failed with following excuse:\n${error}`)
         }
