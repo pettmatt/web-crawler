@@ -5,14 +5,22 @@
     "version": "0.0.1",
     "description": "Checks how many links the html body contains and forwards them to validator",
     "jest": {
-        "transform": { "^.+\\.[t|j]sx?$": "babel-jest" },
+        "transform": {
+            "^.+\\.[t|j]sx?$": "babel-jest"
+        },
         "testEnvironment": "node",
-        "moduleFileExtensions": [ "js", "mjs" ],
-        "testMatch": [ "**/*.test.js", "**/*.test.mjs" ]
+        "moduleFileExtensions": [
+            "js",
+            "mjs"
+        ],
+        "testMatch": [
+            "**/*.test.js",
+            "**/*.test.mjs"
+        ]
     },
     "scripts": {
-        "start": "node ./index",
-        "dev": "nodemon ./index",
+        "start": "node ./receiver",
+        "dev": "nodemon ./receiver",
         "test": "jest",
         "lint": "eslint ."
     },
@@ -26,5 +34,8 @@
         "@types/jest": "^29.5.8",
         "jest": "^29.7.0",
         "nodemon": "^3.0.1"
+    },
+    "dependencies": {
+        "amqplib": "^0.10.3"
     }
 }
