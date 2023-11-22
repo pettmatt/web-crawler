@@ -21,9 +21,9 @@ async function validateLinks(queue) {
 
 		if (!page.processed) {
 			const robotsObject = await checkRobotsFile(page.url)
-
+			
 			object = robotsObject
-
+			
 			linkQueue[index].processed = true
 		}
 
