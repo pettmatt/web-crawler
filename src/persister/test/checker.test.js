@@ -21,8 +21,6 @@ describe("Checker.js lib", () => {
     
             const linkTags = parseTags(html, "<a", "</a>")
 
-            console.log(linkTags)
-
             expect(linkTags).toBeInstanceOf(Array)
             expect(linkTags.length).toBe(3)
             expect(linkTags).toStrictEqual([
