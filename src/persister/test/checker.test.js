@@ -23,8 +23,8 @@ describe("Checker.js lib", () => {
 
             console.log(linkTags)
 
-            // expect(linkTags).toBeInstanceOf(Array)
-            // expect(linkTags.length).toBe(3)
+            expect(linkTags).toBeInstanceOf(Array)
+            expect(linkTags.length).toBe(3)
             expect(linkTags).toStrictEqual([
                 `<a href="/linkToOtherPage">Link 1</a>`,
                 `<a href="/duck.com">Link 2</a>`,
