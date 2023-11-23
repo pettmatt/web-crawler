@@ -10,7 +10,7 @@ describe("Validator can", () => {
 
             const result1 = await validateLinks(links[0])
             const result2 = await validateLinks(links[1])
-            
+
             robotsRouteTest.push(result1)
             robotsRouteTest.push(result2)
 
