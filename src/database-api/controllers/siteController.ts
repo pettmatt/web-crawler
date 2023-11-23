@@ -16,7 +16,7 @@ async function findAll(_req: Request, res: Response) {
 async function createOne (req: Request, res: Response) {
     const { header, description, category, url } = req.body
 
-    if (!header || !url || !description || !category) {
+    if (!header || !description || !category || !url) {
         return res.status(400).json({ message: "Cannot create a site record without necessary parameters." })
     }
 
