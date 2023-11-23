@@ -21,8 +21,10 @@ describe("API can handle", () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
+                    url: "http://www.example.com",
                     header: "Test record",
-                    url: "http://www.example.com"
+                    description: "Description of the site/page",
+                    category: ["search-engine"]
                 })
             })
 
@@ -48,8 +50,10 @@ describe("API can handle", () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    header: "Test record update",
-                    url: "http://www.example.com"
+                    url: "http://www.example.com",
+                    header: "Test record EDITED",
+                    description: "Description of the site/page",
+                    category: ["search-engine"]
                 })
             })
 

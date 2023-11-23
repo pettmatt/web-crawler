@@ -14,16 +14,16 @@ async function findAll(_req: Request, res: Response) {
 }
 
 async function createOne (req: Request, res: Response) {
-    const { header, url } = req.body
+    const { header, description, category, url } = req.body
 
-    if (!header || !url) {
+    if (!header || !url || !description || !category) {
         return res.status(400).json({ message: "Cannot create a site record without necessary parameters." })
     }
 
     let record = null
 
     try {
-        record = await Site.create({ header, url })
+        record = await Site.create({ header, description, category, url })
     } catch(error) {
         return res.status(500).json({ error })
     }
@@ -35,9 +35,9 @@ async function createOne (req: Request, res: Response) {
 
 async function updateOne (req: Request, res: Response) {
     const { id } = req.params
-    const { header, url } = req.body
+    const { header, description, category, url } = req.body
 
-    if (!header || !url || !id) {
+    if (!header || !url || !id || !description || !category) {
         return res.status(400).json({ message: "Cannot update a site record without necessary parameters." })
     }
 
@@ -47,7 +47,7 @@ async function updateOne (req: Request, res: Response) {
         return res.status(200).json({ message: "No such record exists." })
     }
 
-    record.set({ header, url })
+    record.set({ header, description, category, url })
 
     try {
         await record.save()

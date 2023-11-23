@@ -16,6 +16,10 @@ const Sites = client.define("sites", {
         type: DataTypes.STRING,
         allowNull: false
     },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     url: {
         type: DataTypes.STRING,
         allowNull: false
