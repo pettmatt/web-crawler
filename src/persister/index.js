@@ -1,22 +1,22 @@
 import { parseTags, attributeFromTag } from "./lib/checker.js"
 
 function processHTMLBody(page) {
-    const url = page[0].url
-    const head = page[0].details[0].scraped.head
-    const body = page[0].details[0].scraped.body
+    const url = page.url
+    const head = page.scraped.head
+    const body = page.scraped.body
 
-    const linkTags = parseTags(body, "<a", "</a>")
-    const links = []
+    // TODO: Respect the meta tag "rules"
+    // TODO: Implement LM to process the data
 
-    for (let i = 0; i < linkTags.length; i++) {
-        const link = attributeFromTag(linkTags[i], "href")
-        links.push(link)
-    }
+    // const linkTags = parseTags(body, "<a", "</a>")
+    let links = []
+
+    // for (let i = 0; i < linkTags.length; i++) {
+    //     const link = attributeFromTag(linkTags[i], "href")
+    //     links.push(link)
+    // }
 
     links = links.filter((link) => link !== "")
-
-    console.log("Tags", linkTags)
-    console.log("Links", links)
 
     return {
         parentPage: url,

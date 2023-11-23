@@ -5,7 +5,6 @@ import triggerSender from "./sender.js"
 amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
 	if (error) throw error
 
-	let linkQueue = []
 	connection.createChannel((error01, channel) => {
 		if (error01) throw error01
 
@@ -18,28 +17,20 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
 				const url = message.content.toString()
 				// console.log(" [x] Sent %s", url)
 
-				const urlFound = linkQueue.find((object) => object.url === url)
+				const result = await validateLinks(url)
 
-				if (!urlFound) {
-					linkQueue.push({
-						url: url,
-						processed: false,
-					})
-
-					const result = await validateLinks(linkQueue)
-					
-					if (result) {
-						triggerSender(result.processedQueue[0].url)
-					}
-						
-					// if (result.linkQueue) {
-						// TO DO! At this point it could be good to send the overview 
-						// to frontend if url has failed the validation.
-					// }
+				if (result) {
+					triggerSender(result)
 				}
+
+				// if (result) {
+					// TO DO! At this point it could be good to send the overview 
+					// to frontend if url has failed the validation.
+				// }
 
 				channel.ack(message)
 			} catch(error) {
+				console.log("consumer rejects the request", error)
 				channel.reject(message, false)
 			}
 		}, { noAck: false })
@@ -47,5 +38,6 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
 })
 
 setTimeout(() => {
+	console.log("Triggering validator")
 	triggerSender("http://google.com", "validator_queue")
 }, 3000)

@@ -29,7 +29,7 @@ function scrapeHTML(page) {
 	const ruleTags = ["<meta name=\"robots\""]
 	const followRules = ["noindex", "nofollow", "noarchive", "nosnippet"]
 
-	const { html, link } = page
+	const { html, url } = page
 
 	const scrapedContent = scrape.map((chars) => {
 		const charsStart = html.indexOf(chars[0])
@@ -66,7 +66,7 @@ function scrapeHTML(page) {
 	})
 
 	return {
-		url: link,
+		url,
 		scraped: {
 			head,
 			body: scrapedContent[0],

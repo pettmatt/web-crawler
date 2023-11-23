@@ -17,13 +17,15 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
             try {
                 console.log(" [x] sent %s", message)
 
-                const url = message.content.toString()
-                const result = await fetchAndProcessDataFromUrl(url)
+                const urlObject = JSON.parse(message.content.toString())
+                // TODO: Respect the rules specified in robots.txt
+                const result = await fetchAndProcessDataFromUrl(urlObject.url)
 
                 triggerSender(result)
 
                 channel.ack(message)
             } catch(error) {
+                console.log("consumer rejects the request", error)
                 channel.reject(message, false)
             }
         }, { noAck: false })

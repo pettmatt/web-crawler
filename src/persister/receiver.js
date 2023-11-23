@@ -14,11 +14,18 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue)
 
         channel.consume(queue, (message) => {
+            try {
+            console.log(" [x] sent %s", message)
+
             const pageDetails = JSON.parse(message.content.toString())
             const processedPage = processHTMLBody(pageDetails)
             console.log("Page", processedPage)
 
             channel.ack(message)
+            } catch (error) {
+                console.log("consumer rejects the request", error)
+                channel.reject(message, false)
+            }
         }, { noAck: false })
     })
 })

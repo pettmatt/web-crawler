@@ -3,10 +3,13 @@ function parseTags(html, openingTag, closingTag) {
         typeof html !== "string" ||
         typeof openingTag !== "string" ||
         typeof closingTag !== "string"
-    ) return
+    ) throw Error("ParseTags: Passed parameters should be strings")
 
     const tags = []
 
+    // Not scalable! Creates an issue similar to issue 1201626
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=1201626
+    
     for (let i = 0; i < html.length; i++) {
         const tagOpeningIndex = html.indexOf(openingTag, i)
         const tagClosingIndex = html.indexOf(closingTag, i) + closingTag.length

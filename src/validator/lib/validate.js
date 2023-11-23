@@ -3,15 +3,17 @@ async function checkRobotsFile(url) {
 	// const response = `User-agent: *\nDisallow:`
 	const rules = {}
 	const permission = {
-		url: "",
 		restrictions: false,
 		pagesToIgnore: [],
 	}
 
-	// Most likely the response fails, which indicates the site doesn't have "/robots.txt" path
-	if (typeof response !== "string") {
-		permission.url = url
-		permission.error = response
+	// Most likely reason for the request failing is the site doesn't have "/robots.txt" path
+	if (response.error) {
+		permission.error = {
+			error: response.error,
+			message: response.message.toString()
+		}
+
 		return permission
 	}
 

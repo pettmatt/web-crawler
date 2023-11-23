@@ -15,14 +15,14 @@ describe("Validator can", () => {
             robotsRouteTest.push(result2)
 
             expect(result1).toBeInstanceOf(Object)
-            expect(result1).toStrictEqual({ restrictions: false, pagesToIgnore: [], url: 'http://robotstxt.org' })
+            expect(result1).toStrictEqual({ restrictions: false, pagesToIgnore: [], url: "http://robotstxt.org" })
             expect(result2).toBeInstanceOf(Object)
             expect(result2).toStrictEqual({
                 restrictions: false,
                 pagesToIgnore: [],
                 error: {
                     error: true,
-                    message: 'TypeError: Failed to parse URL from google.com/robots.txt'
+                    message: "TypeError: Failed to parse URL from google.com/robots.txt"
                 }
             })
         } catch (error) {
