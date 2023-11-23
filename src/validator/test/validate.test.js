@@ -1,49 +1,43 @@
 import validateLinks from "../index.js"
 
 describe("Validator can", () => {
-    let robotsRouteTest = null
+    let robotsRouteTest = []
 
     test("check robots.txt routes", async () => {
         try {
-            const queue = [
-                {
-                    url: "http://robotstxt.org",
-                    processed: true
-                },
-                {
-                    url: "google.com", // Normally links should be sent in their "proper" form "https://domain.com"
-                    processed: false
-                }
-            ]
+             // Normally links should be sent in their "proper" form "https://domain.com"
+            const links = ["http://robotstxt.org", "google.com"]
 
-            const results = await validateLinks(queue)
-            robotsRouteTest = results
+            const result1 = await validateLinks(links[0])
+            const result2 = await validateLinks(links[1])
             
-            expect(robotsRouteTest).toBeInstanceOf(Object)
+            robotsRouteTest.push(result1)
+            robotsRouteTest.push(result2)
+
+            expect(result1).toBeInstanceOf(Object)
+            expect(result1).toStrictEqual({ restrictions: false, pagesToIgnore: [], url: 'http://robotstxt.org' })
+            expect(result2).toBeInstanceOf(Object)
+            expect(result2).toStrictEqual({
+                restrictions: false,
+                pagesToIgnore: [],
+                error: {
+                    error: true,
+                    message: 'TypeError: Failed to parse URL from google.com/robots.txt'
+                }
+            })
         } catch (error) {
             throw new Error(`Validator robots.txt test failed with following excuse:\n${error}`)
         }
     })
-    
-    test("return an object with processedQueue and urlQueue properties", async () => {
-        expect(robotsRouteTest.processedQueue).toBeDefined()
-        expect(robotsRouteTest.linkQueue).toBeDefined()
-    })
 
-    test("return an object with correct properties and values", async () => {
-        expect(robotsRouteTest.processedQueue).toHaveProperty("[0].url")
-        expect(robotsRouteTest.processedQueue).toHaveProperty("[0].restrictions")
-        expect(robotsRouteTest.processedQueue).toHaveProperty("[0].pagesToIgnore")
-        expect(robotsRouteTest.processedQueue).toHaveProperty("[0].error")
-        expect(robotsRouteTest.linkQueue).toStrictEqual([
-            {
-                "processed": true,
-                "url": "http://robotstxt.org"
-            },
-            {
-                "processed": true,
-                "url": "google.com"
-            }
-        ])
+    test("return an object with correct properties, depending on if request succeeds or fails", async () => {
+        try {
+            expect(robotsRouteTest[0]).toHaveProperty("url")
+            expect(robotsRouteTest[0]).toHaveProperty("restrictions")
+            expect(robotsRouteTest[0]).toHaveProperty("pagesToIgnore")
+            expect(robotsRouteTest[1]).toHaveProperty("error")
+        } catch (error) {
+            throw new Error(`Validator robots.txt test failed with following excuse:\n${error}`)
+        }
     })
 })
