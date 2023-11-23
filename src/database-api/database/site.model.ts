@@ -22,7 +22,8 @@ const Sites = client.define("sites", {
     },
     url: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     category: DataTypes.ARRAY(DataTypes.STRING),
     createdAt: {

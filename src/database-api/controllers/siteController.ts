@@ -23,7 +23,7 @@ async function createOne (req: Request, res: Response) {
     let record = null
 
     try {
-        record = await Site.create({ header, description, category, url })
+        record = await Site.upsert({ header, description, category, url }, { returning: false })
     } catch(error) {
         return res.status(500).json({ error })
     }
@@ -34,20 +34,19 @@ async function createOne (req: Request, res: Response) {
 }
 
 async function updateOne (req: Request, res: Response) {
-    const { id } = req.params
     const { header, description, category, url } = req.body
 
-    if (!header || !url || !id || !description || !category) {
+    if (!header || !url || !description || !category) {
         return res.status(400).json({ message: "Cannot update a site record without necessary parameters." })
     }
 
-    const record = await Site.findOne({ where: { id } })
+    const record = await Site.findOne({ where: { url } })
 
     if (!record) {
         return res.status(200).json({ message: "No such record exists." })
     }
 
-    record.set({ header, description, category, url })
+    record.set({ header, description, category })
 
     try {
         await record.save()
