@@ -1,5 +1,6 @@
 import amqp from "amqplib/callback_api.js"
 import processHTMLBody from "./index.js"
+import { createRecord } from "./lib/database.js"
 import triggerSender from "./sender.js"
 
 amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
@@ -13,15 +14,33 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
 
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue)
 
-        channel.consume(queue, (message) => {
+        channel.consume(queue, async (message) => {
             try {
-            console.log(" [x] sent %s", message)
+                console.log(" [x] sent %s", message)
 
-            const pageDetails = JSON.parse(message.content.toString())
-            const processedPage = processHTMLBody(pageDetails)
-            console.log("Page", processedPage)
+                const pageDetails = JSON.parse(message.content.toString())
+                const processedPage = processHTMLBody(pageDetails)
 
-            channel.ack(message)
+                // Send found links to the validator, remember to send them through a loop
+                const foundLinks = processedPage.linksFound
+
+                // The record object is generated here based on the scraped data from a site
+                // TODO: Create a function that generates details that are needed for creating a record
+                const response = await createRecord({
+                    url: processedPage.parentPage,
+                    header: "Test",
+                    description: "Lorem ipsum...",
+                    category: ["search-engine"],
+                })
+
+                if (response.message) {
+                    console.log("Created or updated successfully")
+                }
+
+                // Send confirmation to frontend
+                // triggerSender()
+
+                channel.ack(message)
             } catch (error) {
                 console.log("consumer rejects the request", error)
                 channel.reject(message, false)
