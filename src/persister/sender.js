@@ -1,23 +1,26 @@
 import amqp from "amqplib/callback_api.js"
 
 function triggerSender(url, queue = "validator_queue") {
-    amqp.connect(`amqp://broker:test@172.20.0.4:5672`, (error, connection) => {
-        if (error) throw error
+	const user = "broker"
+	const password = "test"
 
-        connection.createChannel((error01, channel) => {
-            if (error01) throw error01
+	amqp.connect(`amqp://${user}:${password}@172.20.0.4:5672`, (error, connection) => {
+		if (error) throw error
 
-            const message = JSON.stringify(url)
+		connection.createChannel((error01, channel) => {
+			if (error01) throw error01
 
-            channel.assertQueue(queue, { durable: true })
-            channel.sendToQueue(queue, Buffer.from(message))
+			const message = JSON.stringify(url)
 
-            channel.close(() => {
-                connection.close()
-                process.exit(0)
-            })
-        })
-    })
+			channel.assertQueue(queue, { durable: true })
+			channel.sendToQueue(queue, Buffer.from(message))
+
+			channel.close(() => {
+				connection.close()
+				process.exit(0)
+			})
+		})
+	})
 }
 
 export default triggerSender

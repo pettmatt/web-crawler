@@ -71,7 +71,7 @@ function scrapeHTML(page) {
 			head,
 			body: scrapedContent[0],
 		},
-		rules: scrapeHeadMetaResult
+		rules: scrapeHeadMetaResult,
 	}
 }
 

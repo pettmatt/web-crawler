@@ -1,7 +1,6 @@
 import { testDatabaseConnection } from "./database/client"
 import express, { Request, Response } from "express"
 import stationRoutes from "./routes/sites"
-import journeyRoutes from "./routes/pages"
 import compression from "compression"
 import cors from "cors"
 import env from "dotenv"
@@ -27,19 +26,18 @@ if (productionMode === "development") {
 }
 
 app.use("/", [stationRoutes])
-app.use("/", [journeyRoutes])
 app.use("/", (_req: Request, res: Response) => {
     res.send("Hello world from web-crawler API service")
 })
 
 app.use((_req: Request, res: Response) => {
-    res.status(404).send("Couldn't find the page")
+    res.status(404).send("The page doesn't exist")
 })
 
 app.use((error: Error, _req: Request, res: Response) => {
     res.status(500).json({
         message: "Internal server error",
-        error
+        error,
     })
 })
 

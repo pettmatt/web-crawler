@@ -1,9 +1,9 @@
-import { parseTags, attributeFromTag } from "../lib/checker"
+import { parseTags, attributeFromTag } from "../lib/checker.js"
 
 describe("Checker.js lib", () => {
-    test("parseTags returns link tags from a string", async () => {
-        try {
-            const html = `
+	test("parseTags returns link tags from a string", async () => {
+		try {
+			const html = `
                 <html>
                     <head>
                         <title>Test head<title>
@@ -17,50 +17,50 @@ describe("Checker.js lib", () => {
                     </body>
                     <a href="/">This shouldn't be here, but should be found</a>
                 </html>
-            `
-    
-            const linkTags = parseTags(html, "<a", "</a>")
+			`
 
-            expect(linkTags).toBeInstanceOf(Array)
-            expect(linkTags.length).toBe(3)
-            expect(linkTags).toStrictEqual([
-                `<a href="/linkToOtherPage">Link 1</a>`,
-                `<a href="/duck.com">Link 2</a>`,
-                `<a href="/">This shouldn't be here, but should be found</a>`
-            ])
-        } catch (error) {
-            throw new Error(`parseTags function test failed with following excuse:\n${error}`)
-        }
-    })
+			const linkTags = parseTags(html, "<a", "</a>")
 
-    test("parseTags returns an empty array, if given string doesn't include the tag", async () => {
-        try {
-            const html = ""
-            const noTagsFound = parseTags(html, "<body", "</body>")
+			expect(linkTags).toBeInstanceOf(Array)
+			expect(linkTags.length).toBe(3)
+			expect(linkTags).toStrictEqual([
+				"<a href=\"/linkToOtherPage\">Link 1</a>",
+				"<a href=\"/duck.com\">Link 2</a>",
+				"<a href=\"/\">This shouldn't be here, but should be found</a>",
+			])
+		} catch (error) {
+			throw new Error("parseTags function test failed with following excuse:", error)
+		}
+	})
 
-            expect(noTagsFound).toStrictEqual([])
-        } catch (error) {
-            throw new Error(`parseTags function test failed with following excuse:\n${error}`)
-        }
-    })
+	test("parseTags returns an empty array, if given string doesn't include the tag", async () => {
+		try {
+			const html = ""
+			const noTagsFound = parseTags(html, "<body", "</body>")
 
-    test("attributeFromTag returns an attribute from a HTML tag", async () => {
-        try {
-            const link = attributeFromTag("<a href=\"/internalLink\">Link 1</a>", "href")
+			expect(noTagsFound).toStrictEqual([])
+		} catch (error) {
+			throw new Error("parseTags function test failed with following excuse:", error)
+		}
+	})
 
-            expect(link).toBe("/internalLink")
-        } catch (error) {
-            throw new Error(`attributeFromTag function test failed with following excuse:\n${error}`)
-        }
-    })
+	test("attributeFromTag returns an attribute from a HTML tag", async () => {
+		try {
+			const link = attributeFromTag("<a href=\"/internalLink\">Link 1</a>", "href")
 
-    test("attributeFromTag returns an empty string, if the element doesn't contain the attribute", async () => {
-        try {
-            const shouldFail = attributeFromTag("<h1>Test header</h1>", "doesntExist")
+			expect(link).toBe("/internalLink")
+		} catch (error) {
+			throw new Error("attributeFromTag function test failed with following excuse:", error)
+		}
+	})
 
-            expect(shouldFail).toBe("")
-        } catch (error) {
-            throw new Error(`attributeFromTag function test failed with following excuse:\n${error}`)
-        }
-    })
+	test("attributeFromTag returns an empty string, if the element doesn't contain the attribute", async () => {
+		try {
+			const shouldFail = attributeFromTag("<h1>Test header</h1>", "doesntExist")
+
+			expect(shouldFail).toBe("")
+		} catch (error) {
+			throw new Error("attributeFromTag function test failed with following excuse:", error)
+		}
+	})
 })

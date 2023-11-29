@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
-import Site from "../database/site.model"
+import Site from "../database/site.model.ts"
 
 async function findAll(_req: Request, res: Response) {
     let records = []
 
     try {
         records = await Site.findAll()
-    } catch(error) {
+    } catch (error) {
         return res.status(500).json({ error })
     }
 
@@ -14,17 +14,17 @@ async function findAll(_req: Request, res: Response) {
 }
 
 async function createOne (req: Request, res: Response) {
-    const { header, description, category, url } = req.body
+    const { header, description, tags, url } = req.body
 
-    if (!header || !description || !category || !url) {
+    if (!header || !description || !tags || !url) {
         return res.status(400).json({ message: "Cannot create a site record without necessary parameters." })
     }
 
     let record = null
 
     try {
-        record = await Site.upsert({ header, description, category, url }, { returning: false })
-    } catch(error) {
+        record = await Site.upsert({ header, description, tags, url }, { returning: false })
+    } catch (error) {
         return res.status(500).json({ error })
     }
 
@@ -34,9 +34,9 @@ async function createOne (req: Request, res: Response) {
 }
 
 async function updateOne (req: Request, res: Response) {
-    const { header, description, category, url } = req.body
+    const { header, description, tags, url } = req.body
 
-    if (!header || !url || !description || !category) {
+    if (!header || !url || !description || !tags) {
         return res.status(400).json({ message: "Cannot update a site record without necessary parameters." })
     }
 
@@ -46,12 +46,12 @@ async function updateOne (req: Request, res: Response) {
         return res.status(200).json({ message: "No such record exists." })
     }
 
-    record.set({ header, description, category })
+    record.set({ header, description, tags })
 
     try {
         await record.save()
         return res.status(204).json({ message: "Record updated" })
-    } catch(error) {
+    } catch (error) {
         return res.status(500).json({ error })
     }
 }
@@ -72,7 +72,7 @@ async function deleteOne(req: Request, res: Response) {
     try {
         await record.destroy()
         return res.status(204).json({ message: "Record deleted." })
-    } catch(error) {
+    } catch (error) {
         return res.status(500).json({ error })
     }
 }

@@ -11,7 +11,7 @@ async function checkRobotsFile(url) {
 	if (response.error) {
 		permission.error = {
 			error: response.error,
-			message: response.message.toString()
+			message: response.message.toString(),
 		}
 
 		return permission
@@ -68,4 +68,4 @@ async function fetchRequest(url) {
 	}
 }
 
-export { checkRobotsFile }
+export default checkRobotsFile

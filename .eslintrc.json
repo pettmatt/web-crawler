@@ -9,9 +9,13 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-tabs": "off",
 		"no-undef": "off",
-		"no-tabs": "off",
-        "no-console": 1, // To track how many console logs are used.
+        "no-console": "warn", // To track how many console logs are used.
+        "no-plusplus": "off",
+        "no-return-assign": "off",
+        "consistent-return": "off",
+        "no-use-before-define": "off",
         "import/extensions": ["error", "ignorePackages", {
             "*": "never"
         }],

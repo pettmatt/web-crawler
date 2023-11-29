@@ -24,13 +24,13 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
 				}
 
 				// if (result) {
-					// TO DO! At this point it could be good to send the overview 
-					// to frontend if url has failed the validation.
+				// TO DO! At this point it could be good to send the overview
+				// to frontend if url has failed the validation.
 				// }
 
 				channel.ack(message)
-			} catch(error) {
-				console.log("consumer rejects the request", error)
+			} catch (err) {
+				console.log("consumer rejects the request", err)
 				channel.reject(message, false)
 			}
 		}, { noAck: false })
