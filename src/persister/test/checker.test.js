@@ -1,4 +1,4 @@
-import { parseTags, attributeFromTag } from "../lib/checker.js"
+import { parseTags, attributeFromTag, innerHTMLFromTag } from "../lib/checker.js"
 
 describe("Checker.js lib", () => {
 	test("parseTags returns link tags from a string", async () => {
@@ -61,6 +61,16 @@ describe("Checker.js lib", () => {
 			expect(shouldFail).toBe("")
 		} catch (error) {
 			throw new Error("attributeFromTag function test failed with following excuse:", error)
+		}
+	})
+
+	test("innerHTMLFromTag is able to return the innerHTML of a tag from a string", async () => {
+		try {
+			const title = innerHTMLFromTag("<head><title>Example title</title></head>", "<title>", "</title>")
+
+			expect(title).toBe("Example title")
+		} catch (error) {
+			throw new Error("innerHTMLFromTag function test failed with following excuse:", error)
 		}
 	})
 })
