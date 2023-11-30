@@ -35,12 +35,12 @@ function attributeFromTag(tag, attribute) {
 
 	const attributeIndex = tag.indexOf(attribute)
 
-	if (attributeIndex === -1) return
+	if (attributeIndex === -1) return ""
 
 	const startIndex = tag.indexOf("=\"", attributeIndex) + "=\"".length
 	const endIndex = tag.indexOf("\"", startIndex + 1)
 
-	if (startIndex === -1 || endIndex === -1) return
+	if (startIndex === -1 || endIndex === -1) return ""
 
 	const attributeValue = tag.slice(startIndex, endIndex)
 	return attributeValue
