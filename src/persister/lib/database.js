@@ -19,7 +19,9 @@ async function createRecord(record) {
 
 		return body
 	} catch (error) {
-		return new Error(`Creating a record failed.\n${error}`)
+		return {
+			error: `Creating a record failed.\n${error}`,
+		}
 	}
 }
 

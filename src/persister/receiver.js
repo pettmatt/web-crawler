@@ -1,6 +1,6 @@
 import amqp from "amqplib/callback_api.js"
 import processHTMLBody from "./index.js"
-import { createRecord } from "./lib/database.js"
+import createRecord from "./lib/database.js"
 // import triggerSender from "./sender.js"
 
 amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
@@ -27,18 +27,21 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
 				// The record object is generated here based on the scraped data from a site
 				// TODO: Create a function that generates details that are needed for creating a record
 				const response = await createRecord({
-					url: processedPage.parentPage,
-					header: "Test",
-					description: "Lorem ipsum...",
-					tags: ["search-engine"],
+					url: processedPage.page.url,
+					header: processedPage.page.header,
+					description: "",
+					tags: [],
 				})
 
-				if (response.message) {
+				if (response.error) {
+					console.log(response)
+				} else {
+					console.log(response)
 					console.log("Created or updated successfully")
 				}
 
 				// Send confirmation to frontend
-				// triggerSender()
+				// triggerSender().then(() => triggerSender())
 
 				channel.ack(message)
 			} catch (err) {

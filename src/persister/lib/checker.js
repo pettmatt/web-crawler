@@ -7,21 +7,20 @@ function parseTags(html, openingTag, closingTag) {
 
 	const tags = []
 
-	// Not scalable! Creates an issue similar to issue 1201626
+	// Creating a bug by trying to jump to the next iteration of
+	// a open html-tag can result in an issue detailed below.
 	// https://bugs.chromium.org/p/chromium/issues/detail?id=1201626
 
+	let searchIndex = 0
 	for (let i = 0; i < html.length; i++) {
-		const tagOpeningIndex = html.indexOf(openingTag, i)
-		const tagClosingIndex = html.indexOf(closingTag, i) + closingTag.length
+		const tagOpeningIndex = html.indexOf(openingTag, searchIndex)
+		const tagClosingIndex = html.indexOf(closingTag, searchIndex) + closingTag.length
 
 		if (tagOpeningIndex !== -1 && tagClosingIndex !== -1) {
 			const tag = html.slice(tagOpeningIndex, tagClosingIndex)
 			tags.push(tag)
-
-			// Making sure the loop doesn't iterate unnecessary amount
-			if (tagOpeningIndex > i) {
-				i = tagClosingIndex
-			}
+			// To prevent duplication of a link
+			searchIndex = tagClosingIndex
 		} else {
 			break
 		}
@@ -46,4 +45,17 @@ function attributeFromTag(tag, attribute) {
 	return attributeValue
 }
 
-export { parseTags, attributeFromTag }
+function innerHTMLFromTag(html, openingTag = ">", closingTag = "<") {
+	const headerOpenIndex = html.indexOf(openingTag) + openingTag.length
+	const headerCloseIndex = html.indexOf(closingTag, headerOpenIndex)
+	const innerHTML = (headerOpenIndex !== -1 && headerCloseIndex !== -1)
+		? html.substring(
+			headerOpenIndex,
+			headerCloseIndex,
+		)
+		: Error("Cannot find opening or closing tags from the string:", html)
+
+	return innerHTML
+}
+
+export { parseTags, attributeFromTag, innerHTMLFromTag }
