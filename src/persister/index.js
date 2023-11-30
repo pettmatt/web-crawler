@@ -5,11 +5,10 @@ function processHTMLBody(page) {
 	const { head, body } = scraped
 
 	// TODO: Respect the meta tag "rules"
-	// TODO: Implement LM to process the data
+	// TODO: Implement LM to determing the tags
 
 	const linkTags = parseTags(body, "<a", "</a>")
 	const headerTag = parseTags(body, "<h1", "</h1>")
-	console.log("header tag", headerTag)
 
 	let headerTitle = ""
 
@@ -28,14 +27,12 @@ function processHTMLBody(page) {
 
 	links = links.filter((link) => link !== "")
 
-	// Next these links should be returned to the validator, and the url of this page
-	// should be returned to the database (with a guess what the page contains).
-
 	return {
 		linksFound: links,
 		page: {
 			url,
-			header: headerTitle,
+			header: (headerTitle instanceof Error) ? links : headerTitle,
+			tags: [],
 		},
 		html: {
 			head,

@@ -30,22 +30,26 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
 					url: processedPage.page.url,
 					header: processedPage.page.header,
 					description: "",
-					tags: [],
+					tags: processedPage.page.tags,
 				})
 
 				if (response.error) {
+					// Send error message to the frontend
+					console.log(processedPage)
 					console.log(response)
 				} else {
+					// Send confirmation of the progress to frontend
+					// and send links to validator
 					console.log(response)
 					console.log("Created or updated successfully")
 				}
 
-				// Send confirmation to frontend
+				// Send confirmation to frontend & send links to validator through a loop
 				// triggerSender().then(() => triggerSender())
 
 				channel.ack(message)
 			} catch (err) {
-				console.log("consumer rejects the request", err)
+				console.log("Consumer rejects the request", err)
 				channel.reject(message, false)
 			}
 		}, { noAck: false })

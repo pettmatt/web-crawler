@@ -11,16 +11,18 @@ async function createRecord(record) {
 		const body = await response.json()
 
 		if (response.status === 400) {
-			throw new Error({
+			return {
+				message: "Creating a record failed",
 				statusCode: response.status,
 				body,
-			})
+			}
 		}
 
 		return body
 	} catch (error) {
 		return {
-			error: `Creating a record failed.\n${error}`,
+			message: "Creating a record failed",
+			error,
 		}
 	}
 }
