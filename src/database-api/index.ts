@@ -3,10 +3,11 @@ import express, { Request, Response } from "express"
 import stationRoutes from "./routes/sites"
 import compression from "compression"
 import cors from "cors"
-import env from "dotenv"
+import * as env from "dotenv"
+
 env.config()
 
-const productionMode = process.env.MODE
+const productionMode = process.env.NODE_ENV
 const app = express()
 const port = 3000
 
@@ -19,7 +20,7 @@ app.use(cors(corsOptions))
 app.use(compression())
 app.use(express.json())
 
-// Challenge: Limit requests that the client and the bot scripts can make (returning 429 status code). (Check if necessary)
+// Optional: Limit requests that the client and the bot scripts can make (returning 429 status code). (Check if necessary)
 
 if (productionMode === "development") {
     testDatabaseConnection()
@@ -42,5 +43,7 @@ app.use((error: Error, _req: Request, res: Response) => {
 })
 
 app.listen(port, () => {
-    console.log(`Express is listening at http://localhost:${port}`)
+    console.log(`Express is listening at http://${
+        (process.env.API_ADDRESS) ? process.env.API_ADDRESS : "localhost"
+    }:${port}`)
 })

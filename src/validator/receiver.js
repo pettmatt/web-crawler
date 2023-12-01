@@ -1,8 +1,16 @@
 import amqp from "amqplib/callback_api.js"
+import * as env from "dotenv"
 import validateLinks from "./index.js"
 import triggerSender from "./sender.js"
 
-amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
+env.config()
+
+const user = process.env.RABBITMQ_USER
+const password = process.env.RABBITMQ_PASSWORD
+const address = process.env.RABBITMQ_ADDRESS
+const port = process.env.RABBITMQ_PORT
+
+amqp.connect(`amqp://${user}:${password}@${address}:${port}`, (error, connection) => {
 	if (error) throw error
 
 	connection.createChannel((error01, channel) => {
@@ -12,10 +20,12 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
 		channel.assertQueue(queue, { durable: true })
 		console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue)
 
+		channel.prefetch(1)
+
 		channel.consume(queue, async (message) => {
 			try {
 				const url = message.content.toString()
-				// console.log(" [x] Sent %s", url)
+				console.log(" [x] Sent %s", url)
 
 				const result = await validateLinks(url)
 
@@ -23,10 +33,8 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
 					triggerSender(result)
 				}
 
-				// if (result) {
 				// TO DO! At this point it could be good to send the overview
 				// to frontend if url has failed the validation.
-				// }
 
 				channel.ack(message)
 			} catch (err) {
@@ -36,8 +44,3 @@ amqp.connect("amqp://broker:test@172.20.0.4:5672", (error, connection) => {
 		}, { noAck: false })
 	})
 })
-
-setTimeout(() => {
-	console.log("Triggering validator")
-	triggerSender("http://google.com", "validator_queue")
-}, 3000)

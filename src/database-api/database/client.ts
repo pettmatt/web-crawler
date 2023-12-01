@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize"
-import env from "dotenv"
+import * as env from "dotenv"
 
 env.config()
 
@@ -8,7 +8,7 @@ const host = process.env.DATABASE_HOST
 const username = process.env.POSTGRES_USER
 const password = process.env.POSTGRES_PASSWORD
 const database = process.env.POSTGRES_DB
-const productionMode = process.env.PRODUCTION
+const productionMode = process.env.NODE_ENV
 
 const client = new Sequelize(database, username, password, {
 	host,

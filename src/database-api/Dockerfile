@@ -4,6 +4,7 @@ WORKDIR /usr/src/api
 COPY package*.json ./
 RUN npm ci
 COPY . .
+RUN npm run build
 
 EXPOSE 3000
-RUN npm run start
+CMD ["npm", "start"]

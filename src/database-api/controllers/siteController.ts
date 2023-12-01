@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import Site from "../database/site.model.ts"
+import Site from "../database/site.model"
 
 async function findAll(_req: Request, res: Response) {
     let records = []

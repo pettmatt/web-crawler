@@ -11,8 +11,8 @@ services:
       - POSTGRES_DB=testdb
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
-    ports:
-      - 5432:5432
+    # ports:
+    #   - 5432:5432
     networks:
       inner-network:
         ipv4_address: 172.20.0.2
@@ -33,62 +33,76 @@ services:
       context: .
       dockerfile: Dockerfile.Broker
     environment:
-      - "RABBITMQ_DEFAULT_USER=broker"
-      - "RABBITMQ_DEFAULT_PASS=test"
+      - RABBITMQ_DEFAULT_USER=broker
+      - RABBITMQ_DEFAULT_PASS=test
     networks:
       inner-network:
         ipv4_address: 172.20.0.4
 
-  # db-api:
-  #   restart: always
-  #   build:
-  #     context: ./src/fetch-bot
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     - db
-  #   environment:
-  #     - POSTGRES_PORT=5432
-  #     - POSTGRES_DB=testdb
-  #     - POSTGRES_USER=test
-  #     - POSTGRES_PASSWORD=test
-  #     - MODE=development
-  #   # env_file:
-  #     # - .env
-  #   ports:
-  #     - 3000
-  #   networks:
-  #     inner-network:
-  #       ipv4_address: 172.20.0.4
+  db-api:
+    restart: always
+    build:
+      context: ./src/database-api
+      dockerfile: Dockerfile
+    depends_on:
+    environment:
+      - API_ADDRESS=172.20.0.5
+      - DATABASE_HOST=172.20.0.2
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - NODE_ENV=development
+    ports:
+      - 3000:3000
+    networks:
+      inner-network:
+        ipv4_address: 172.20.0.5
 
-  # fetch-bot:
-  #   restart: always
-  #   build:
-  #     context: ./src/fetch-bot
-  #   ports:
-  #     - 3001
-  #   networks:
-  #     inner-network:
-  #       ipv4_address: 172.20.0.4
+  fetch-bot:
+    restart: always
+    build:
+      context: ./src/fetch-bot
+    depends_on:
+      - broker
+    environment:
+      - RABBITMQ_USER=broker
+      - RABBITMQ_PASSWORD=test
+      - RABBITMQ_ADDRESS=172.20.0.4
+      - RABBITMQ_PORT=5672
+    networks:
+      inner-network:
+        ipv4_address: 172.20.0.6
 
-  # persister:
-  #   restart: always
-  #   build:
-  #     context: ./src/persister
-  #   ports:
-  #     - 3002
-  #   networks:
-  #     inner-network:
-  #       ipv4_address: 172.20.0.4
+  persister:
+    restart: always
+    build:
+      context: ./src/persister
+    depends_on:
+      - broker
+    environment:
+      - RABBITMQ_USER=broker
+      - RABBITMQ_PASSWORD=test
+      - RABBITMQ_ADDRESS=172.20.0.4
+      - RABBITMQ_PORT=5672
+    networks:
+      inner-network:
+        ipv4_address: 172.20.0.7
 
-  # validator:
-  #   restart: always
-  #   build:
-  #     context: ./src/validator
-  #   ports:
-  #     - 3003
-  #   networks:
-  #     inner-network:
-  #       ipv4_address: 172.20.0.4
+  validator:
+    restart: always
+    build:
+      context: ./src/validator
+    depends_on:
+      - broker
+    environment:
+      - RABBITMQ_USER=broker
+      - RABBITMQ_PASSWORD=test
+      - RABBITMQ_ADDRESS=172.20.0.4
+      - RABBITMQ_PORT=5672
+    networks:
+      inner-network:
+        ipv4_address: 172.20.0.8
 
 networks:
   inner-network:

@@ -10,8 +10,8 @@
         "testMatch": [ "**/*.test.js", "**/*.test.mjs" ]
     },
     "scripts": {
-        "start": "tsc && node dist/index.js",
-        "build": "tsc",
+        "start": "tsc -p tsconfig.json && node dist/index.js",
+        "build": "tsc -p tsconfig.json",
         "test": "jest",
         "lint": "eslint . --ext .ts"
     },

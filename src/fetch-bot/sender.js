@@ -1,10 +1,13 @@
 import amqp from "amqplib/callback_api.js"
+import * as env from "dotenv"
 
 function triggerSender(data, queue = "persister_queue") {
-	const user = "broker"
-	const password = "test"
+	const user = process.env.RABBITMQ_USER
+	const password = process.env.RABBITMQ_PASSWORD
+	const address = process.env.RABBITMQ_ADDRESS
+	const port = process.env.RABBITMQ_PORT
 
-	amqp.connect(`amqp://${user}:${password}@172.20.0.4:5672`, (error, connection) => {
+	amqp.connect(`amqp://${user}:${password}@${address}:${port}`, (error, connection) => {
 		if (error) throw error
 
 		connection.createChannel((error01, channel) => {

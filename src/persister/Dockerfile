@@ -1,8 +1,12 @@
-FROM node:20-alpine
+FROM node:20
+
+Run apt-get update && \
+    apt-get install -y python3
+
 WORKDIR /usr/src/persister
 
 COPY package*.json ./
 RUN npm ci
 COPY . .
 
-RUN npm run start
+CMD ["npm", "start"]

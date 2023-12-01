@@ -1,10 +1,10 @@
 import { Sequelize, DataTypes } from "sequelize"
-import env from "dotenv"
-import { client } from "./client.ts"
+import * as env from "dotenv"
+import { client } from "./client"
 
 env.config()
 
-const productionMode = process.env.PRODUCTION
+const productionMode = process.env.NODE_ENV
 
 const Sites = client.define("sites", {
 	id: {
