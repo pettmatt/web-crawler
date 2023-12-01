@@ -1,6 +1,8 @@
 import amqp from "amqplib/callback_api.js"
 import * as env from "dotenv"
 
+env.config()
+
 function triggerSender(data, queue = "persister_queue") {
 	const user = process.env.RABBITMQ_USER
 	const password = process.env.RABBITMQ_PASSWORD
