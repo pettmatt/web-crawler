@@ -1,6 +1,8 @@
-# base-web-crawler
+# Web crawler
 
-Readme file will be finished when the project hits the "1.0.0" mark.
+**Readme file will be finished when the project hits the "1.0.0" mark.**
+
+Web crawler that uses microservice architecture to pass data between services. At the moment the project has functional backend without the functionality to show what's happening with a frontend application.
 
 ## Testing and linting
 
@@ -16,4 +18,16 @@ jest
 
 ```bash
 eslint .
+```
+## Installation and running
+
+It's recommended to run the crawler under docker, but if necessary the project can be run manually utilizing JavaScript tools, such as Node.js to run the code and npm to manage the libraries. More information can be found in `package.json` files.
+
+### Running under docker
+
+```terminal
+sudo docker compose up
+
+# or when developing
+sudo docker compose up --build --renew-anon-volumes
 ```
