@@ -4,10 +4,18 @@
     "description": "Interface for interacting with the database.",
     "main": "dist/src/index.js",
     "jest": {
-        "transform": { "^.+\\.[t|j]sx?$": "babel-jest" },
+        "transform": {
+            "^.+\\.[t|j]sx?$": "babel-jest"
+        },
         "testEnvironment": "node",
-        "moduleFileExtensions": [ "js", "mjs" ],
-        "testMatch": [ "**/*.test.js", "**/*.test.mjs" ]
+        "moduleFileExtensions": [
+            "js",
+            "mjs"
+        ],
+        "testMatch": [
+            "**/*.test.js",
+            "**/*.test.mjs"
+        ]
     },
     "scripts": {
         "start": "tsc -p tsconfig.json && node dist/index.js",
