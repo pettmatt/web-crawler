@@ -5,7 +5,7 @@ function processHTMLBody(page) {
 	const { head, body } = scraped
 
 	// TODO: Respect the meta tag "rules"
-	// TODO: Implement LM to determing the tags
+	// TODO: Implement LM to determing the tags (to be done later, maybe)
 
 	const linkTags = parseTags(body, "<a", "</a>")
 	const headerTag = parseTags(body, "<h1", "</h1>")
