@@ -10,11 +10,24 @@ It's recommended to run the crawler under docker, but if necessary the project c
 
 ### Running under docker
 
-```terminal
-sudo docker compose up
+```sh
+docker compose up
 
 # or when developing
-sudo docker compose up --build --renew-anon-volumes
+docker compose up --build --renew-anon-volumes
+```
+
+### Running the application manually
+
+If you're going to run the application manually you need to include `.env` file in each source directory. Check `docker-compose.yml` file for more details about what each directory requires.
+
+Example of a `.env` file:
+
+```sh
+RABBITMQ_USER=guest
+RABBITMQ_PASSWORD=guest
+RABBITMQ_ADDRESS=0.0.0.0
+RABBITMQ_PORT=5672
 ```
 
 ## Testing and linting
