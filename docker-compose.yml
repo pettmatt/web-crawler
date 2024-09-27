@@ -40,6 +40,11 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=broker
       - RABBITMQ_DEFAULT_PASS=test
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       inner-network:
         ipv4_address: 172.20.0.4
