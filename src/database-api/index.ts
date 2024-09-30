@@ -9,10 +9,11 @@ env.config()
 
 const productionMode = process.env.NODE_ENV
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
+const origin = process.env.CORS_ORIGIN || "http://localhost:4200"
 
 const corsOptions = {
-    origin: "http://localhost:4200",
+    origin: origin,
     optionsSuccessStatus: 200
 }
 
@@ -43,7 +44,7 @@ app.use((error: Error, _req: Request, res: Response) => {
 })
 
 app.listen(port, () => {
-    console.log(`Express is listening at http://${
-        (process.env.API_ADDRESS) ? process.env.API_ADDRESS : "localhost"
+    console.log(`Express is listening at ${
+        (process.env.API_ADDRESS) ? process.env.API_ADDRESS : "http://localhost"
     }:${port}`)
 })

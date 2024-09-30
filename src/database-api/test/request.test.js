@@ -1,7 +1,12 @@
+import * as env from "dotenv"
+env.config()
+
+const port = process.env.PORT
+
 describe("API can handle", () => {
 	test("GET /sites", async () => {
 		try {
-			const res = await fetch("http://localhost:3000/sites")
+			const res = await fetch(`http://localhost:${port}/sites`)
 
 			if (res.ok) {
 				expect(res.status).toBe(200)
@@ -15,7 +20,7 @@ describe("API can handle", () => {
 
 	test("POST /sites", async () => {
 		try {
-			const res = await fetch("http://localhost:3000/sites", {
+			const res = await fetch(`http://localhost:${port}/sites`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -44,7 +49,7 @@ describe("API can handle", () => {
 
 	test("PUT /sites/1", async () => {
 		try {
-			const res = await fetch("http://localhost:3000/sites/1", {
+			const res = await fetch(`http://localhost:${port}/sites/1`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -76,9 +81,9 @@ describe("API can handle", () => {
 
 	test("DELETE /sites/1", async () => {
 		try {
-			const getRes = await fetch("http://localhost:3000/sites")
+			const getRes = await fetch(`http://localhost:${port}/sites`)
 			const getBody = await getRes.json()
-			const deleteRes = await fetch("http://localhost:3000/sites/1", {
+			const deleteRes = await fetch(`http://localhost:${port}/sites/1`, {
 				method: "DELETE",
 			})
 
@@ -86,7 +91,7 @@ describe("API can handle", () => {
 				expect([200, 204]).toContain(deleteRes.status)
 
 				if (deleteRes.status === 204) {
-					const doubleCheckRes = await fetch("http://localhost:3000/sites")
+					const doubleCheckRes = await fetch(`http://localhost:${port}/sites`)
 					const doubleCheckBody = await doubleCheckRes.json()
 
 					if (doubleCheckBody) {
