@@ -53,19 +53,26 @@ async function fetchRequest(url) {
 		const res = await fetch(url)
 
 		if (!res.ok) {
-			throw new Error(`Failed to fetch robots.txt: ${res.statusText}`)
+			const message = `Failed to fetch robots.txt: ${res.statusText}`
+			const objectError = createError(message)
+			return objectError
 		}
 
 		const content = await res.text()
 		return content
 	} catch (error) {
-		const objectError = {
-			error: true,
-			message: error,
-		}
-
+		const objectError = createError(error)
 		return objectError
 	}
+}
+
+function createError(message) {
+	const objectError = {
+		error: true,
+		message: message,
+	}
+
+	return objectError
 }
 
 export default checkRobotsFile
