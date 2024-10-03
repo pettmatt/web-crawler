@@ -17,6 +17,16 @@ docker compose up
 docker compose up --build --renew-anon-volumes
 ```
 
+### Running invidual containers
+
+```sh
+# Build an image
+docker run -d -p 5672:5672 -p 15672:15672 --name broker broker
+
+# Run the container
+docker run -d -p 5672:5672 -p 15672:15672 --name broker broker
+```
+
 ### Running the application manually
 
 If you're going to run the application manually you need to include `.env` file in each source directory. Check `docker-compose.yml` file for more details about what each directory requires.

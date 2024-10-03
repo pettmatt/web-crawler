@@ -40,6 +40,8 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=broker
       - RABBITMQ_DEFAULT_PASS=test
+    ports:
+      - 15672:15672
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
       interval: 10s
