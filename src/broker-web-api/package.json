@@ -1,0 +1,20 @@
+{
+  "name": "broker-web-api",
+  "version": "1.0.0",
+  "description": "API that communicates with the broker and sends messages and receives them for the web interface.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "broker",
+    "api"
+  ],
+  "author": "pettmatt",
+  "dependencies": {
+    "amqplib": "^0.10.4",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.0"
+  }
+}
