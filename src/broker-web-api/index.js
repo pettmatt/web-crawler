@@ -43,19 +43,26 @@ app.post("/send", async (req, res) => {
 })
 
 app.get("/receive", async (req, res) => {
-    channel.consume(queue, (message) => {
-        if (message !== null) {
-            const message = message.content.toString()
-            console.log(" [x] Received %s", message)
-            channel.ack(message) // Acknowledge message after processing
-
-            res.status(200).json({
-				message: `Received message: ${message}`
-			})
-        } else {
-            res.status(404).json({
-				message: "No messages in queue."
-			})
+    channel.consume(queue, async (incomingMessage) => {
+        try {
+            if (incomingMessage !== null) {
+                const message = incomingMessage.content.toString()
+                console.log(" [x] Received %s", message)
+                channel.ack(message) // Acknowledge message after processing
+    
+                res.status(200).json({
+                    message: `Received message: ${message}`
+                })
+            } else {
+                res.status(404).json({
+                    message: "No messages in queue."
+                })
+            }
+        } catch (error) {
+            channel.reject(incomingMessage, false)
+            // res.status(400).json({
+            //     message: "Error occured while receiving."
+            // })
         }
     })
 })
