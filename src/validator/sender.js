@@ -3,7 +3,7 @@ import * as env from "dotenv"
 
 env.config()
 
-function triggerSender(url, queue = "fetch_bot_queue") {
+function triggerSender(urlObject, queue = "fetch_bot_queue") {
 	const user = process.env.RABBITMQ_USER
 	const password = process.env.RABBITMQ_PASSWORD
 	const address = process.env.RABBITMQ_ADDRESS
@@ -15,7 +15,7 @@ function triggerSender(url, queue = "fetch_bot_queue") {
 		connection.createChannel((error01, channel) => {
 			if (error01) throw error01
 
-			const message = (typeof url === "string") ? url : JSON.stringify(url)
+			const message = (typeof urlObject === "string") ? urlObject : JSON.stringify(urlObject)
 
 			channel.assertQueue(queue, { durable: true })
 			channel.sendToQueue(queue, Buffer.from(message))

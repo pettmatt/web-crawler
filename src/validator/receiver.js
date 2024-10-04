@@ -2,6 +2,7 @@ import amqp from "amqplib/callback_api.js"
 import * as env from "dotenv"
 import validateLinks from "./index.js"
 import triggerSender from "./sender.js"
+import { extractUrls } from "./lib/utility.js"
 
 env.config()
 
@@ -24,13 +25,16 @@ amqp.connect(`amqp://${user}:${password}@${address}:${port}`, (error, connection
 
 		channel.consume(queue, async (message) => {
 			try {
-				const url = message.content.toString()
-				console.log(" [x] Sent %s", url)
+				const searchTerm = message.content.toString()
+				console.log(" [x] Sent %s", searchTerm)
 
-				const result = await validateLinks(url)
+				const searchObject = extractUrls(searchTerm)
+				const results = (searchObject.urls)
+					? searchObject.urls.map(async url => await validateLinks(url))
+					: null
 
-				if (result) {
-					triggerSender(result)
+				if (results) {
+					triggerSender(results)
 				}
 
 				// TO DO! At this point it could be good to send the overview
