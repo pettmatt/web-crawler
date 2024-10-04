@@ -34,7 +34,7 @@ app.post("/send", async (req, res) => {
 		})
     }
 
-    channel.sendToqueue(queue, Buffer.from(message))
+    channel.sendToQueue(queue, Buffer.from(message))
     console.log(" [x] Sent %s", message)
 
     res.status(200).json({
@@ -46,7 +46,7 @@ app.get("/receive", async (req, res) => {
     channel.consume(queue, (message) => {
         if (message !== null) {
             const message = message.content.toString()
-            console.log(` [x] Received %s`, message)
+            console.log(" [x] Received %s", message)
             channel.ack(message) // Acknowledge message after processing
 
             res.status(200).json({
@@ -57,6 +57,12 @@ app.get("/receive", async (req, res) => {
 				message: "No messages in queue."
 			})
         }
+    })
+})
+
+app.get("/", async (req, res) => {
+    res.status(200).json({
+        message: "Web API is reachable."
     })
 })
 
