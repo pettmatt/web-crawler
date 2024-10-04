@@ -21,7 +21,7 @@ docker compose up --build --renew-anon-volumes
 
 ```sh
 # Build an image
-docker run -d -p 5672:5672 -p 15672:15672 --name broker broker
+docker build -t broker -f Dockerfile.Broker .
 
 # Run the container
 docker run -d -p 5672:5672 -p 15672:15672 --name broker broker
