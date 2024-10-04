@@ -1,10 +1,14 @@
 import express from "express"
 import amqp from "amqplib"
 import bodyParser from "body-parser"
+import cors from "cors"
 import * as env from "dotenv"
 
 const app = express()
 app.use(bodyParser.json())
+app.use(cors({
+    origin: "http://localhost:5173"
+}))
 env.config()
 
 const port = process.env.PORT
