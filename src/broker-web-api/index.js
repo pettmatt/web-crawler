@@ -18,8 +18,8 @@ const brokerPort = process.env.RABBITMQ_PORT
 
 amqp.connect(`amqp://${user}:${password}@${address}:${brokerPort}`)
     .then((connection) => connection.createChannel())
-    .then((channel) => {
-        channel = this.channel
+    .then((ch) => {
+        channel = ch
 		console.log(" [*] Web API broker connection achieved!")
         return channel.assertQueue(queue)
     })
