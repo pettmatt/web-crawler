@@ -38,7 +38,7 @@ app.post("/send", async (req, res) => {
 		})
     }
 
-    channel.sendToQueue(queue, Buffer.from(message))
+    channel.sendToQueue("validator_queue", Buffer.from(message))
     console.log(" [x] Sent %s", message)
 
     res.status(200).json({
