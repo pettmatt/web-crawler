@@ -21,14 +21,12 @@ amqp.connect(`amqp://${user}:${password}@${address}:${port}`, (error, connection
 		console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue)
 
 		channel.prefetch(1)
-
 		channel.consume(queue, async (message) => {
 			try {
-				console.log(" [x] sent %s", message)
-
 				const urlObject = JSON.parse(message.content.toString())
-				const result = await fetchAndProcessDataFromUrl(urlObject.url)
+				console.log(" [x] sent %s", urlObject)
 
+				const result = await fetchAndProcessDataFromUrl(urlObject.url)
 				triggerSender(result)
 
 				channel.ack(message)
